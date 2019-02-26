@@ -1,0 +1,26 @@
+all: myapp
+OBJS= prog1.o prog2.o prog3.o ./prog4/prog4.o driver.o
+LB = -lc
+INSDIR = /usr/bin
+
+myapp: $(OBJS)
+	gcc -o myapp $(OBJS) $(LB)
+prog1.o: prog1.c
+	gcc -c prog1.c
+prog2.o: prog2.c
+	gcc -c prog2.c
+prog3.o: prog3.c
+	gcc -c prog3.c
+driver.o: driver.c header.h ./prog4/prog4.h
+	gcc -c driver.c -I.
+
+include: ./prog4/makefile
+
+clean:
+	-@rm -f $(OBJS)
+
+install: myapp
+	@cp myexe $(INSDIR)
+	@chmod a+x $(INSDIR)/myapp
+	@chmod og-w $(INSDIR)/myapp
+	@echo "installed successfully"
